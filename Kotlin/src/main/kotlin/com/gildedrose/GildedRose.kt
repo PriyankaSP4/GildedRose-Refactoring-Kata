@@ -1,6 +1,27 @@
 package com.gildedrose
 
 class GildedRose(var items: Array<Item>) {
+    
+    fun qualityDec(quality: Int, name: String, sulfuras:String, conjured:String) : Int{
+        var qual = quality
+        if (qual > 0 && !name.contains(sulfuras)) {
+            qual -= 1
+            if (name.contains(conjured)) {
+                qual -= 1
+            }
+        }
+        return qual
+    }
+
+    fun qualityInc(quality:Int): Int{
+        if (quality < 50){
+            return quality + 1
+        }
+        else{
+            return quality
+        }
+
+    }
 
     fun updateQuality() {
         for (i in items.indices) {
@@ -11,34 +32,22 @@ class GildedRose(var items: Array<Item>) {
             var sulfuras = "Sulfuras"
             var brie = "Aged Brie"
             var conjured = "Conjured"
+
             if (quality > 50) {
                 quality = 50
             }
+
             if (name != brie && !name.contains(backstage)) {
-                if (quality > 0) {
-                    if (!name.contains(sulfuras)) {
-                        quality -= 1
-                        if (name.contains(conjured)) {
-                            quality -= 1
-                        }
-                    }
-                }
+                quality = qualityDec(quality, name, sulfuras, conjured)
+
             } else {
-                if (quality < 50) {
-                    quality += 1
-
-                    if (name.contains(backstage)) {
-                        if (sellIn < 11) {
-                            if (quality < 50) {
-                                quality += 1
-                            }
-                        }
-
-                        if (sellIn < 6) {
-                            if (quality < 50) {
-                                quality += 1
-                            }
-                        }
+                quality = qualityInc(quality)
+                if (name.contains(backstage)) {
+                    if (sellIn < 11) {
+                        quality = qualityInc(quality)
+                    }
+                    if (sellIn < 6) {
+                        quality = qualityInc(quality)
                     }
                 }
             }
@@ -50,27 +59,17 @@ class GildedRose(var items: Array<Item>) {
             if (sellIn < 0) {
                 if (name != brie) {
                     if (!name.contains(backstage)) {
-                        if (quality > 0) {
-                            if (!name.contains(sulfuras)) {
-                                quality -= 1
-                                if (name.contains(conjured)) {
-                                quality -= 1
-                                }
-                            }
-                        }
+                        quality = qualityDec(quality, name, sulfuras, conjured)
                     } else {
                         quality = 0
                     }
                 } else {
-                    if (quality < 50) {
-                        quality += 1
-                    }
+                    quality = qualityInc(quality)
                 }
             }
             items[i].quality = quality
             items[i].sellIn = sellIn
         }
     }
-
 }
 
