@@ -24,76 +24,75 @@ class GildedRose(var items: Array<Item>) {
         return sellIn - 1
     }
 
-    fun normal(i:Int) {
-        items[i].quality = qualityDec(items[i].quality)
-        items[i].sellIn = sellInDec(items[i].sellIn)
-        if (items[i].sellIn < 0) {
-            items[i].quality = qualityDec(items[i].quality)
+    fun normal(item: Item) {
+        item.quality = qualityDec(item.quality)
+        item.sellIn = sellInDec(item.sellIn)
+        if (item.sellIn < 0) {
+            item.quality = qualityDec(item.quality)
         }
     }
 
-    fun brie(i:Int){
-        items[i].quality = qualityInc(items[i].quality)
-        items[i].sellIn = sellInDec(items[i].sellIn)
+    fun brie(item: Item){
+        item.quality = qualityInc(item.quality)
+        item.sellIn = sellInDec(item.sellIn)
     }
 
-    fun backstage(i:Int){
-        items[i].quality = qualityInc(items[i].quality)
+    fun backstage(item: Item){
+        item.quality = qualityInc(item.quality)
 
-        if (items[i].sellIn < 11) {
-            items[i].quality = qualityInc(items[i].quality)
+        if (item.sellIn < 11) {
+            item.quality = qualityInc(item.quality)
         }
-        if (items[i].sellIn < 6) {
-            items[i].quality = qualityInc(items[i].quality)
+        if (item.sellIn < 6) {
+            item.quality = qualityInc(item.quality)
         }
 
-        if (items[i].sellIn < 1) {
-            items[i].quality = 0
-        }
-    }
-
-    fun conjured(i:Int){
-        items[i].quality = qualityDec(items[i].quality)
-        items[i].quality = qualityDec(items[i].quality)
-        items[i].sellIn = sellInDec(items[i].sellIn)
-        if (items[i].sellIn < 0) {
-            items[i].quality = qualityDec(items[i].quality)
-            items[i].quality = qualityDec(items[i].quality)
+        if (item.sellIn < 1) {
+            item.quality = 0
         }
     }
 
-    fun maxQual(i:Int){
-        if (items[i].quality > 50) {
-            items[i].quality = 50
+    fun conjured(item: Item){
+        item.quality = qualityDec(item.quality)
+        item.quality = qualityDec(item.quality)
+        item.sellIn = sellInDec(item.sellIn)
+        if (item.sellIn < 0) {
+            item.quality = qualityDec(item.quality)
+            item.quality = qualityDec(item.quality)
+        }
+    }
+
+    fun maxQual(item: Item){
+        if (item.quality > 50) {
+            item.quality = 50
         }
     }
 
     fun updateQuality() {
-        for (i in items.indices) {
-            val name = items[i].name
-            var backstage = "Backstage passes"
-            var sulfuras = "Sulfuras"
-            var brie = "Aged Brie"
-            var conjured = "Conjured"
+        for (item in items) {
+            val name = item.name
+            val backstage = "Backstage passes"
+            val sulfuras = "Sulfuras"
+            val brie = "Aged Brie"
+            val conjured = "Conjured"
 
-            maxQual(i)
+            maxQual(item)
 
             if (name == brie){
-                brie(i)
+                brie(item)
             }
             else if (name.contains(backstage)){
-                backstage(i)
+                backstage(item)
             }
             else if (name.contains(sulfuras)){
                 break
             }
             else if (name.contains(conjured)){
-                conjured(i)
+                conjured(item)
             }
             else{
-                normal(i)
+                normal(item)
             }
         }
     }
 }
-
