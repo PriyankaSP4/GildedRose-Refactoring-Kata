@@ -4,53 +4,71 @@ class GildedRose(var items: Array<Item>) {
 
     fun updateQuality() {
         for (i in items.indices) {
-            if (items[i].name != "Aged Brie" && items[i].name != "Backstage passes to a TAFKAL80ETC concert") {
-                if (items[i].quality > 0) {
-                    if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-                        items[i].quality = items[i].quality - 1
+            val name = items[i].name
+            var quality = items[i].quality
+            var sellIn = items[i].sellIn
+            var backstage = "Backstage passes"
+            var sulfuras = "Sulfuras"
+            var brie = "Aged Brie"
+            var conjured = "Conjured"
+            if (quality > 50) {
+                quality = 50
+            }
+            if (name != brie && !name.contains(backstage)) {
+                if (quality > 0) {
+                    if (!name.contains(sulfuras)) {
+                        quality -= 1
+                        if (name.contains(conjured)) {
+                            quality -= 1
+                        }
                     }
                 }
             } else {
-                if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1
+                if (quality < 50) {
+                    quality += 1
 
-                    if (items[i].name == "Backstage passes to a TAFKAL80ETC concert") {
-                        if (items[i].sellIn < 11) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1
+                    if (name.contains(backstage)) {
+                        if (sellIn < 11) {
+                            if (quality < 50) {
+                                quality += 1
                             }
                         }
 
-                        if (items[i].sellIn < 6) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1
+                        if (sellIn < 6) {
+                            if (quality < 50) {
+                                quality += 1
                             }
                         }
                     }
                 }
             }
 
-            if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-                items[i].sellIn = items[i].sellIn - 1
+            if (!name.contains(sulfuras)) {
+                sellIn -= 1
             }
 
-            if (items[i].sellIn < 0) {
-                if (items[i].name != "Aged Brie") {
-                    if (items[i].name != "Backstage passes to a TAFKAL80ETC concert") {
-                        if (items[i].quality > 0) {
-                            if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-                                items[i].quality = items[i].quality - 1
+            if (sellIn < 0) {
+                if (name != brie) {
+                    if (!name.contains(backstage)) {
+                        if (quality > 0) {
+                            if (!name.contains(sulfuras)) {
+                                quality -= 1
+                                if (name.contains(conjured)) {
+                                quality -= 1
+                                }
                             }
                         }
                     } else {
-                        items[i].quality = items[i].quality - items[i].quality
+                        quality = 0
                     }
                 } else {
-                    if (items[i].quality < 50) {
-                        items[i].quality = items[i].quality + 1
+                    if (quality < 50) {
+                        quality += 1
                     }
                 }
             }
+            items[i].quality = quality
+            items[i].sellIn = sellIn
         }
     }
 
