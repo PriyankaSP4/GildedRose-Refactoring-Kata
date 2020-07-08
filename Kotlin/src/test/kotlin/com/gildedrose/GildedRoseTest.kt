@@ -40,10 +40,10 @@ class GildedRoseTest {
 
     @Test fun quality_not_exceeding_50() {
         //test max quality of 50
-        val items = arrayOf<Item>(Item("priceless", 5, 52))
+        val items = arrayOf<Item>(Item("Aged Brie", 5, 50))
         val app = GildedRose(items)
         app.updateQuality()
-        assertEquals(49, app.items[0].quality)
+        assertEquals(50, app.items[0].quality)
     }
 
     @Test fun quality_never_negative() {
@@ -71,11 +71,11 @@ class GildedRoseTest {
     }
 
     @Test fun brie_increasing_in_quality() {
-        val items = arrayOf<Item>(Item("Aged Brie", 10, 30))
+        val items = arrayOf<Item>(Item("Aged Brie", 10, 50))
         val app = GildedRose(items)
         app.updateQuality()
         assertEquals(9, app.items[0].sellIn)
-        assertEquals(31, app.items[0].quality)
+        assertEquals(50, app.items[0].quality)
     }
 
     @Test fun backstage_passes_quality_rules_dep_on_sellIn() {
